@@ -3,6 +3,7 @@ import 'vehicle_list_screen.dart';
 import 'maintenance_screen.dart';
 import 'expenses_screen.dart';
 import 'guides_screen.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,6 +29,10 @@ class HomeScreen extends StatelessWidget {
             icon: Icon(CupertinoIcons.book),
             label: 'Guides',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.settings),
+            label: 'Settings',
+          ),
         ],
       ),
       tabBuilder: (BuildContext context, int index) {
@@ -42,6 +47,8 @@ class HomeScreen extends StatelessWidget {
                 return const ExpensesScreen();
               case 3:
                 return const GuidesScreen();
+              case 4:
+                return const SettingsScreen();
               default:
                 return const VehicleListScreen();
             }

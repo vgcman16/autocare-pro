@@ -1,16 +1,56 @@
-# car_maintenance_tracker
+# AutoCare Pro
 
-A new Flutter project.
+AutoCare Pro is a comprehensive vehicle maintenance tracking app built with Flutter. It helps you manage your vehicle maintenance, track expenses, and access maintenance guides.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+### Vehicle Management
+- Add and manage multiple vehicles
+- Track vehicle details (make, model, year, VIN, mileage)
+- View service history
 
-A few resources to get you started if this is your first Flutter project:
+### Maintenance Tracking
+- Schedule maintenance tasks
+- Set service reminders
+- Track maintenance history
+- View upcoming maintenance
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Maintenance Guides
+- Access step-by-step maintenance guides
+- Add custom maintenance procedures
+- View estimated time and difficulty
+- Track required tools and parts
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Expense Tracking
+- Record maintenance expenses
+- Track fuel costs
+- View expense history and reports
+
+## Privacy
+
+AutoCare Pro respects your privacy and ensures your data stays secure:
+- All data is stored locally on your device
+- No external servers or data collection
+- Camera and photo access only when needed
+
+Read our full [Privacy Policy](https://github.com/vgcman16/autocare-pro/blob/main/PRIVACY.md) for more details.
+
+## Installation
+
+AutoCare Pro is available on the iOS App Store:
+[Download on the App Store](#) <!-- Add App Store link when available -->
+
+## Support
+
+If you encounter any issues or have questions:
+1. Check our [GitHub Issues](https://github.com/vgcman16/autocare-pro/issues)
+2. Open a new issue if needed
+3. Contact us through the App Store
+
+## Contributing
+
+We welcome contributions! Please feel free to submit pull requests or open issues for any bugs or feature requests.
+
+## License
+
+AutoCare Pro is released under the MIT License. See [LICENSE](LICENSE) for details.
