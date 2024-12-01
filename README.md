@@ -49,8 +49,14 @@ If you encounter any issues or have questions:
 
 ## Contributing
 
-We welcome contributions! Please feel free to submit pull requests or open issues for any bugs or feature requests.
+While AutoCare Pro is proprietary software, we welcome bug reports and feature suggestions through our GitHub Issues page. For any contributions or modifications, please contact us directly.
 
 ## License
 
-AutoCare Pro is released under the MIT License. See [LICENSE](LICENSE) for details.
+AutoCare Pro is proprietary software released under a commercial license. All rights reserved. See [LICENSE](LICENSE) for details.
+
+## Legal
+
+- AutoCare Pro™ is a trademark of [Your Company Name]
+- Copyright 2023 [Your Company Name]. All rights reserved.
+- Privacy Policy: [View Here](https://github.com/vgcman16/autocare-pro/blob/main/PRIVACY.md)
