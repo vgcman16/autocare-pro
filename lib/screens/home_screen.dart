@@ -1,60 +1,62 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'vehicle_list_screen.dart';
-import 'maintenance_screen.dart';
+import 'maintenance_overview_screen.dart';
+import 'fuel_overview_screen.dart';
 import 'expenses_screen.dart';
-import 'guides_screen.dart';
 import 'settings_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+  
+  final List<Widget> _screens = [
+    const VehicleListScreen(),
+    const MaintenanceOverviewScreen(),
+    const FuelOverviewScreen(),
+    const ExpensesScreen(),
+    const SettingsScreen(),
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    return CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.car_detailed),
+    return Scaffold(
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.directions_car),
             label: 'Vehicles',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.wrench),
+          NavigationDestination(
+            icon: Icon(Icons.build),
             label: 'Maintenance',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.money_dollar),
+          NavigationDestination(
+            icon: Icon(Icons.local_gas_station),
+            label: 'Fuel',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.attach_money),
             label: 'Expenses',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.book),
-            label: 'Guides',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.settings),
+          NavigationDestination(
+            icon: Icon(Icons.settings),
             label: 'Settings',
           ),
         ],
+        onDestinationSelected: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
       ),
-      tabBuilder: (BuildContext context, int index) {
-        return CupertinoTabView(
-          builder: (context) {
-            switch (index) {
-              case 0:
-                return const VehicleListScreen();
-              case 1:
-                return const MaintenanceScreen();
-              case 2:
-                return const ExpensesScreen();
-              case 3:
-                return const GuidesScreen();
-              case 4:
-                return const SettingsScreen();
-              default:
-                return const VehicleListScreen();
-            }
-          },
-        );
-      },
     );
   }
 }

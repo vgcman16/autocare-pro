@@ -3,8 +3,8 @@ class Vehicle {
   final String make;
   final String model;
   final int year;
-  final String vin;
   final int mileage;
+  final String? vin;
   final String? imageUrl;
 
   Vehicle({
@@ -12,10 +12,12 @@ class Vehicle {
     required this.make,
     required this.model,
     required this.year,
-    required this.vin,
     required this.mileage,
+    this.vin,
     this.imageUrl,
   });
+
+  String get name => '$year $make $model';
 
   Map<String, dynamic> toMap() {
     return {
@@ -38,6 +40,26 @@ class Vehicle {
       vin: map['vin'],
       mileage: map['mileage'],
       imageUrl: map['imageUrl'],
+    );
+  }
+
+  Vehicle copyWith({
+    int? id,
+    String? make,
+    String? model,
+    int? year,
+    int? mileage,
+    String? vin,
+    String? imageUrl,
+  }) {
+    return Vehicle(
+      id: id ?? this.id,
+      make: make ?? this.make,
+      model: model ?? this.model,
+      year: year ?? this.year,
+      vin: vin ?? this.vin,
+      mileage: mileage ?? this.mileage,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 }

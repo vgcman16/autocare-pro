@@ -20,7 +20,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
-  late Vehicle _selectedVehicle;
+  late Vehicle? _selectedVehicle;
   String _selectedCategory = 'Maintenance';
 
   final List<String> _categories = [
@@ -35,7 +35,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedVehicle = widget.vehicles.first;
+    _selectedVehicle = widget.vehicles.isNotEmpty ? widget.vehicles.first : null;
   }
 
   @override
@@ -93,7 +93,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       description: _descriptionController.text,
       amount: double.parse(_amountController.text),
       date: _selectedDate,
-      vehicleId: _selectedVehicle.id ?? 0,
+      vehicleId: _selectedVehicle?.id ?? 0,
       category: _selectedCategory,
       notes: _notesController.text.isEmpty ? null : _notesController.text,
     );
@@ -103,6 +103,32 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.vehicles.isEmpty) {
+      return CupertinoPageScaffold(
+        navigationBar: const CupertinoNavigationBar(
+          middle: Text('Add Expense'),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Please add a vehicle first',
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 16),
+                CupertinoButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Go Back'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: const Text('Add Expense'),
@@ -266,7 +292,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         ),
                         const Spacer(),
                         Text(
-                          '${_selectedVehicle.year} ${_selectedVehicle.make} ${_selectedVehicle.model}',
+                          _selectedVehicle != null
+                              ? '${_selectedVehicle!.year} ${_selectedVehicle!.make} ${_selectedVehicle!.model}'
+                              : '',
                           style: const TextStyle(
                             color: CupertinoColors.systemGrey,
                           ),

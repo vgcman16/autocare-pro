@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import '../models/expense.dart';
 import '../models/vehicle.dart';
+import '../services/vehicle_service.dart';
 import 'add_expense_screen.dart';
 
 class ExpensesScreen extends StatefulWidget {
@@ -13,15 +14,27 @@ class ExpensesScreen extends StatefulWidget {
 
 class _ExpensesScreenState extends State<ExpensesScreen> {
   final List<Expense> _expenses = [];
-  final List<Vehicle> _dummyVehicles = [
-    Vehicle(
-      make: 'Toyota',
-      model: 'Camry',
-      year: 2020,
-      vin: 'ABC123',
-      mileage: 50000,
-    ),
-  ];
+  final List<Vehicle> _vehicles = [];
+  final VehicleService _vehicleService = VehicleService();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVehicles();
+  }
+
+  Future<void> _loadVehicles() async {
+    try {
+      final vehicles = await _vehicleService.getVehicles();
+      setState(() {
+        _vehicles.clear();
+        _vehicles.addAll(vehicles);
+      });
+    } catch (e) {
+      // TODO: Show error to user
+      print('Error loading vehicles: $e');
+    }
+  }
 
   double get _totalExpenses {
     return _expenses.fold(0, (sum, expense) => sum + expense.amount);
@@ -32,7 +45,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
       context,
       CupertinoPageRoute(
         builder: (context) => AddExpenseScreen(
-          vehicles: _dummyVehicles,
+          vehicles: _vehicles,
         ),
       ),
     );
@@ -129,16 +142,12 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
       itemCount: _expenses.length,
       itemBuilder: (context, index) {
         final expense = _expenses[index];
-        final vehicle = _dummyVehicles.firstWhere(
-          (v) => v.id == expense.vehicleId,
-          orElse: () => _dummyVehicles.first,
-        );
         
         return _buildExpenseItem(
           date: expense.date,
           description: expense.description,
           amount: expense.amount,
-          vehicle: '${vehicle.year} ${vehicle.make} ${vehicle.model}',
+          vehicleId: expense.vehicleId,
           category: expense.category,
         );
       },
@@ -149,49 +158,79 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
     required DateTime date,
     required String description,
     required double amount,
-    required String vehicle,
+    required int vehicleId,
     required String category,
   }) {
-    final dateFormat = DateFormat('MMM d, yyyy');
-    
+    final vehicle = _vehicles.firstWhere(
+      (v) => v.id == vehicleId,
+      orElse: () => Vehicle(
+        make: 'Unknown',
+        model: 'Vehicle',
+        year: 0,
+        mileage: 0,
+      ),
+    );
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-      child: CupertinoListSection.insetGrouped(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: CupertinoColors.systemGrey.withOpacity(0.2),
+          ),
+        ),
+      ),
+      child: Row(
         children: [
-          CupertinoListTile(
-            title: Text(description),
-            subtitle: Column(
+          Expanded(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(vehicle),
                 Text(
-                  category,
+                  description,
                   style: const TextStyle(
-                    color: CupertinoColors.systemGrey,
-                    fontSize: 12,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  DateFormat('MMM d, y').format(date),
+                  style: TextStyle(
+                    color: CupertinoColors.systemGrey.withOpacity(0.8),
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${vehicle.year} ${vehicle.make} ${vehicle.model}',
+                  style: TextStyle(
+                    color: CupertinoColors.systemGrey.withOpacity(0.8),
+                    fontSize: 14,
                   ),
                 ),
               ],
             ),
-            trailing: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  '\$${amount.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                '\$${amount.toStringAsFixed(2)}',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
                 ),
-                Text(
-                  dateFormat.format(date),
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: CupertinoColors.systemGrey,
-                  ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                category,
+                style: TextStyle(
+                  color: CupertinoColors.systemGrey.withOpacity(0.8),
+                  fontSize: 14,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),

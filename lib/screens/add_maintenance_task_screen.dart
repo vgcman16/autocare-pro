@@ -20,12 +20,12 @@ class _AddMaintenanceTaskScreenState extends State<AddMaintenanceTaskScreen> {
   final TextEditingController _mileageController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
-  late Vehicle _selectedVehicle;
+  late Vehicle? _selectedVehicle;
 
   @override
   void initState() {
     super.initState();
-    _selectedVehicle = widget.vehicles.first;
+    _selectedVehicle = widget.vehicles.isNotEmpty ? widget.vehicles.first : null;
   }
 
   @override
@@ -84,7 +84,7 @@ class _AddMaintenanceTaskScreenState extends State<AddMaintenanceTaskScreen> {
       dueDate: _selectedDate,
       dueMileage: int.parse(_mileageController.text),
       notes: _notesController.text,
-      vehicleId: _selectedVehicle.id ?? 0,
+      vehicleId: _selectedVehicle?.id ?? 0,
     );
 
     Navigator.pop(context, task);
@@ -92,6 +92,32 @@ class _AddMaintenanceTaskScreenState extends State<AddMaintenanceTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.vehicles.isEmpty) {
+      return CupertinoPageScaffold(
+        navigationBar: const CupertinoNavigationBar(
+          middle: Text('Add Maintenance Task'),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Please add a vehicle first',
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 16),
+                CupertinoButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Go Back'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: const Text('Add Maintenance Task'),
@@ -199,7 +225,7 @@ class _AddMaintenanceTaskScreenState extends State<AddMaintenanceTaskScreen> {
                         ),
                         const Spacer(),
                         Text(
-                          '${_selectedVehicle.year} ${_selectedVehicle.make} ${_selectedVehicle.model}',
+                          '${_selectedVehicle?.year} ${_selectedVehicle?.make} ${_selectedVehicle?.model}',
                           style: const TextStyle(
                             color: CupertinoColors.systemGrey,
                           ),
