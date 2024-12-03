@@ -5,6 +5,7 @@ import '../services/maintenance_record_service.dart';
 import '../screens/documents_screen.dart';
 import '../screens/maintenance_screen.dart';
 import '../screens/fuel_screen.dart';
+import '../screens/trips_screen.dart';
 import 'package:intl/intl.dart';
 
 class VehicleDetailsScreen extends StatefulWidget {
@@ -28,7 +29,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> with Single
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
     _loadData();
   }
 
@@ -65,6 +66,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> with Single
             Tab(icon: Icon(Icons.build), text: 'Maintenance'),
             Tab(icon: Icon(Icons.local_gas_station), text: 'Fuel'),
             Tab(icon: Icon(Icons.folder), text: 'Documents'),
+            Tab(icon: Icon(Icons.map), text: 'Trips'),
           ],
         ),
       ),
@@ -75,6 +77,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> with Single
           MaintenanceScreen(vehicleId: widget.vehicle.id!),
           FuelScreen(vehicleId: widget.vehicle.id!),
           DocumentsScreen(vehicleId: widget.vehicle.id!),
+          TripsScreen(vehicleId: widget.vehicle.id!),
         ],
       ),
     );

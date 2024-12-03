@@ -6,7 +6,7 @@ import '../models/fuel_record.dart';
 
 class DatabaseService {
   static Database? _database;
-  static const int _version = 2; // Increment version to force database recreation
+  static const int _version = 5; // Increment version to fix table creation
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -30,7 +30,9 @@ class DatabaseService {
           await db.execute('DROP TABLE IF EXISTS fuel_records');
           await db.execute('DROP TABLE IF EXISTS maintenance_records');
           await db.execute('DROP TABLE IF EXISTS maintenance_reminders');
-          await db.execute('DROP TABLE IF EXISTS vehicle_documents');
+          await db.execute('DROP TABLE IF EXISTS documents');
+          await db.execute('DROP TABLE IF EXISTS trips');
+          await db.execute('DROP TABLE IF EXISTS frequent_destinations');
           await db.execute('DROP TABLE IF EXISTS vehicles');
           
           // Recreate all tables
@@ -44,7 +46,6 @@ class DatabaseService {
     await db.execute('''
       CREATE TABLE vehicles (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
         make TEXT NOT NULL,
         model TEXT NOT NULL,
         year INTEGER NOT NULL,
@@ -107,6 +108,37 @@ class DatabaseService {
         repeat_miles INTEGER,
         is_completed INTEGER NOT NULL DEFAULT 0,
         notification_id TEXT,
+        FOREIGN KEY (vehicle_id) REFERENCES vehicles (id) ON DELETE CASCADE
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE trips (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        vehicle_id INTEGER NOT NULL,
+        start_time TIMESTAMP NOT NULL,
+        end_time TIMESTAMP,
+        start_location TEXT,
+        end_location TEXT,
+        start_odometer REAL,
+        end_odometer REAL,
+        trip_type TEXT NOT NULL,
+        purpose TEXT,
+        fuel_cost REAL,
+        notes TEXT,
+        route_points TEXT,
+        FOREIGN KEY (vehicle_id) REFERENCES vehicles (id) ON DELETE CASCADE
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE frequent_destinations (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        vehicle_id INTEGER NOT NULL,
+        name TEXT NOT NULL,
+        address TEXT NOT NULL,
+        visit_count INTEGER NOT NULL DEFAULT 1,
+        last_visited TIMESTAMP NOT NULL,
         FOREIGN KEY (vehicle_id) REFERENCES vehicles (id) ON DELETE CASCADE
       )
     ''');
