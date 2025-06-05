@@ -24,10 +24,10 @@ class VehicleDocument {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'vehicleId': vehicleId,
+      'vehicle_id': vehicleId,
       'title': title,
       'type': type,
-      'filePath': filePath,
+      'file_path': filePath,
       'date': date.toIso8601String(),
       'description': description,
       'amount': amount,
@@ -38,10 +38,10 @@ class VehicleDocument {
   factory VehicleDocument.fromMap(Map<String, dynamic> map) {
     return VehicleDocument(
       id: map['id'],
-      vehicleId: map['vehicleId'],
+      vehicleId: map['vehicle_id'],
       title: map['title'],
       type: map['type'],
-      filePath: map['filePath'],
+      filePath: map['file_path'],
       date: DateTime.parse(map['date']),
       description: map['description'],
       amount: map['amount'] != null ? (map['amount'] as num).toDouble() : null,

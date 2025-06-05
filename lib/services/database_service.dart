@@ -31,6 +31,7 @@ class DatabaseService {
           await db.execute('DROP TABLE IF EXISTS maintenance_records');
           await db.execute('DROP TABLE IF EXISTS maintenance_reminders');
           await db.execute('DROP TABLE IF EXISTS documents');
+          await db.execute('DROP TABLE IF EXISTS vehicle_documents');
           await db.execute('DROP TABLE IF EXISTS trips');
           await db.execute('DROP TABLE IF EXISTS frequent_destinations');
           await db.execute('DROP TABLE IF EXISTS vehicles');
@@ -84,14 +85,16 @@ class DatabaseService {
     ''');
 
     await db.execute('''
-      CREATE TABLE documents (
+      CREATE TABLE vehicle_documents (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         vehicle_id INTEGER NOT NULL,
         title TEXT NOT NULL,
         file_path TEXT NOT NULL,
         date TIMESTAMP NOT NULL,
         type TEXT NOT NULL,
-        notes TEXT,
+        description TEXT,
+        amount REAL,
+        metadata TEXT,
         FOREIGN KEY (vehicle_id) REFERENCES vehicles (id) ON DELETE CASCADE
       )
     ''');
