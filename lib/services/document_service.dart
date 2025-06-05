@@ -45,14 +45,14 @@ class DocumentService {
       metadata: metadata,
     );
 
-    final id = await _db.insert('vehicle_documents', document.toMap());
+    final id = await _db.insert('documents', document.toMap());
     return document.copyWith(id: id);
   }
 
   Future<List<VehicleDocument>> getDocuments(int vehicleId) async {
     final records = await _db.query(
-      'vehicle_documents',
-      where: 'vehicleId = ?',
+      'documents',
+      where: 'vehicle_id = ?',
       whereArgs: [vehicleId],
     );
     return records.map((record) => VehicleDocument.fromMap(record)).toList();
@@ -60,7 +60,7 @@ class DocumentService {
 
   Future<void> deleteDocument(int id) async {
     final document = (await _db.query(
-      'vehicle_documents',
+      'documents',
       where: 'id = ?',
       whereArgs: [id],
     )).first;
@@ -72,7 +72,7 @@ class DocumentService {
     }
     
     // Delete the database record
-    await _db.delete('vehicle_documents', where: 'id = ?', whereArgs: [id]);
+    await _db.delete('documents', where: 'id = ?', whereArgs: [id]);
   }
 
   Future<File> exportToPdf(int vehicleId) async {
