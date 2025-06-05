@@ -11,7 +11,7 @@ class CarMaintenanceApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Car Maintenance Tracker',
+      title: 'AutoCare Pro',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
