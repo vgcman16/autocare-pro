@@ -52,7 +52,7 @@ class DocumentService {
   Future<List<VehicleDocument>> getDocuments(int vehicleId) async {
     final records = await _db.query(
       'vehicle_documents',
-      where: 'vehicleId = ?',
+      where: 'vehicle_id = ?',
       whereArgs: [vehicleId],
     );
     return records.map((record) => VehicleDocument.fromMap(record)).toList();
